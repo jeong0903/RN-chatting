@@ -2,12 +2,13 @@ const Colors={
   white: '#ffffff',
   black: '#000000',
   main: '#3679fe',
-  transparent: 'transparent',
+  grey_0: '#d5d5d5',
+  grey_1: '#a6a6a6',
 };
 
 export const theme={
   background: Colors.white,
-  Text: Colors.black,
+  text: Colors.black,
 
   // Button
   btnBackground: Colors.main,
@@ -15,5 +16,11 @@ export const theme={
   btnTextLink: Colors.main,
 
   // Image
-  imgBackground: Colors.transparent,
+  imgBackground: Colors.white,
+
+  // Input
+  inputBackground: Colors.white,
+  inputLabel: Colors.grey_1,
+  inputPlaceholder: Colors.grey_1,
+  inputBorder:Colors.grey_1,
 };
