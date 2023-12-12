@@ -17,6 +17,8 @@ export const theme={
 
   // Image
   imgBackground: Colors.white,
+  imgBtnBackground: Colors.grey_1,
+  imgBtnIcon: Colors.white,
 
   // Input
   inputBackground: Colors.white,
