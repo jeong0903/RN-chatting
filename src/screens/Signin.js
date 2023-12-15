@@ -1,9 +1,12 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { ThemeContext } from "styled-components/native";
 import styled from "styled-components/native";
-import { Button, Image, Input } from "../components";
+import { Button, Image, Input, ErrorMessage } from "../components";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Alert } from "react-native";
+import { signin } from "../firebase";
+import { validateEmail, removeWhitespace } from "../utils";
 
 const Container = styled.View`
   flex: 1;
@@ -24,20 +27,41 @@ const Signin = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [disabled, setDisabled] = useState(true);
   const refPassword = useRef(null);
 
-  const _handleSigninBtnPress = () => {
-    console.log("Sign in!");
+  useEffect(() => {
+    setDisabled(!(email && password && !errorMessage))
+  }, [email, password, errorMessage])
+
+  const _handleEmailChange = (email) => {
+    const changedEmail = removeWhitespace(email);
+    setEmail(changedEmail);
+    setErrorMessage(
+      validateEmail(changedEmail)
+        ? ""
+        : "Email 주소를 확인하세요(ex.id@email.com)"
+    );
   };
-  const _handleSignupBtnPress = () => {
-    console.log("Sign up!");
+  const _handlePasswordChange = (password) => {
+    setPassword(removeWhitespace(password));
+  };
+
+  const _handleSigninBtnPress = async () => {
+    try {
+      const user = await signin({ email, password });
+      navigation.navigate("Profile", { user });
+    } catch (e) {
+      Alert.alert("Sign in Error", e.message);
+    }
   };
 
   return (
-    <KeyboardAwareScrollView 
+    <KeyboardAwareScrollView
       extraScrollHeight={25}
-      contentContainerStyle={{flex: 1}}
-      >
+      contentContainerStyle={{ flex: 1 }}
+    >
       <Container insets={insets}>
         <Image url={LOGO} />
         <Input
@@ -45,7 +69,7 @@ const Signin = ({ navigation }) => {
           placeholder="이메일주소"
           returnKeyType="next"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={_handleEmailChange}
           onSubmitEditing={() => refPassword.current.focus()}
         />
         <Input
@@ -54,11 +78,16 @@ const Signin = ({ navigation }) => {
           placeholder="비밀번호"
           returnKeyType="done"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={_handlePasswordChange}
           isPassword={true}
           onSubmitEditing={_handleSigninBtnPress}
         />
-        <Button title="Sign in" onPress={_handleSigninBtnPress} />
+        <ErrorMessage message={errorMessage} />
+        <Button
+          title="Sign in"
+          onPress={_handleSigninBtnPress}
+          disabled={disabled}
+        />
         <Button
           title="or sign up"
           onPress={() => navigation.navigate("Signup")}
