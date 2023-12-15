@@ -1,7 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components/native";
-import { Button, Image, Input } from "../components";
+import { Button, Image, Input, ErrorMessage } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { signup } from "../firebase";
+import { Alert } from "react-native";
+import { validateEmail, removeWhitespace } from "../utils";
 
 const Container = styled.View`
   flex: 1;
@@ -11,27 +14,63 @@ const Container = styled.View`
   padding: 50px 20px;
 `;
 
-const DEFAULT_PHOTO = 'https://firebasestorage.googleapis.com/v0/b/react-native-chat-1463b.appspot.com/o/user.png?alt=media';
+const DEFAULT_PHOTO =
+  "https://firebasestorage.googleapis.com/v0/b/react-native-chat-1463b.appspot.com/o/user.png?alt=media";
 
-const Signup = () => {
+const Signup = ({ navigation }) => {
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordCk, setPasswordCk] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCk, setPasswordCk] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
   const refEmail = useRef(null);
   const refPassword = useRef(null);
   const refPasswordCk = useRef(null);
+  const refDidMount = useRef(null);
 
-  const _handleSignupBtnPress = () => {
-    console.log("Sign up!");
+  useEffect(() => {
+    setDisabled(!(name && email && password && passwordCk && !errorMessage));
+  }, [email, name, password, passwordCk, errorMessage]);
+
+  useEffect(() => {
+    if (refDidMount.current) {
+      let error = "";
+      if (!name) {
+        error = "이름을 입력하세요";
+      } else if (!email) {
+        error = "email을 입력하세요";
+      } else if (!validateEmail(email)) {
+        error = "올바른 email 형식이 아닙니다.";
+      } else if (password.length < 6) {
+        error = "비밀번호는 6자리 이상입니다.";
+      } else if (passwordCk !== password) {
+        error = "비밀번호와 비밀번호 확인이 동일해야합니다.";
+      } else {
+        error = "";
+      }
+      setErrorMessage(error);
+    } else {
+      refDidMount.current = true;
+    }
+  }, [email, name, password, passwordCk]);
+
+  const _handleSignupBtnPress = async () => {
+    try {
+      const user = await signup({ name, email, password, photo });
+      navigation.navigate("Profile", { user });
+    } catch (e) {
+      Alert.alert("Sign up Error", e.message);
+    }
+    console.log("sign up!");
   };
 
   return (
     <KeyboardAwareScrollView extraScrollHeight={25}>
       <Container>
-        <Image showButton={true} url={photo} onChangePhoto={setPhoto}/>
+        <Image showButton={true} url={photo} onChangePhoto={setPhoto} />
         <Input
           label="Name"
           placeholder="사용자 이름"
@@ -39,6 +78,8 @@ const Signup = () => {
           value={name}
           onChangeText={setName}
           onSubmitEditing={() => refEmail.current.focus()}
+          onBlur={() => setName(name.trim())}
+          maxLength={12}
         />
         <Input
           ref={refEmail}
@@ -48,6 +89,7 @@ const Signup = () => {
           value={email}
           onChangeText={setEmail}
           onSubmitEditing={() => refPassword.current.focus()}
+          onBlur={() => setEmail(removeWhitespace(email))}
         />
         <Input
           ref={refPassword}
@@ -58,6 +100,7 @@ const Signup = () => {
           onChangeText={setPassword}
           isPassword={true}
           onSubmitEditing={() => refPasswordCk.current.focus()}
+          onBlur={() => setPassword(removeWhitespace(password))}
         />
         <Input
           ref={refPasswordCk}
@@ -68,8 +111,14 @@ const Signup = () => {
           onChangeText={setPasswordCk}
           isPassword={true}
           onSubmitEditing={() => _handleSignupBtnPress}
+          onBlur={() => setPasswordCk(removeWhitespace(passwordCk))}
         />
-        <Button title="Sign up" onPress={_handleSignupBtnPress} />
+        <ErrorMessage message={errorMessage} />
+        <Button
+          title="Sign up"
+          onPress={_handleSignupBtnPress}
+          disabled={disabled}
+        />
       </Container>
     </KeyboardAwareScrollView>
   );
