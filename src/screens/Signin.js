@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Alert } from "react-native";
 import { signin } from "../firebase";
 import { validateEmail, removeWhitespace } from "../utils";
+import { UserContext } from "../contexts";
 
 const Container = styled.View`
   flex: 1;
@@ -24,6 +25,7 @@ const LOGO =
 const Signin = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const theme = useContext(ThemeContext);
+  const {setUser} = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,7 +53,7 @@ const Signin = ({ navigation }) => {
   const _handleSigninBtnPress = async () => {
     try {
       const user = await signin({ email, password });
-      navigation.navigate("Profile", { user });
+      setUser(user);
     } catch (e) {
       Alert.alert("Sign in Error", e.message);
     }

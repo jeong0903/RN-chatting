@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components/native";
 import { Button, Image, Input, ErrorMessage } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { signup } from "../firebase";
 import { Alert } from "react-native";
 import { validateEmail, removeWhitespace } from "../utils";
+import { UserContext } from "../contexts";
 
 const Container = styled.View`
   flex: 1;
@@ -18,6 +19,7 @@ const DEFAULT_PHOTO =
   "https://firebasestorage.googleapis.com/v0/b/react-native-chat-1463b.appspot.com/o/user.png?alt=media";
 
 const Signup = ({ navigation }) => {
+  const {setUser} = useContext(UserContext);
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -60,11 +62,10 @@ const Signup = ({ navigation }) => {
   const _handleSignupBtnPress = async () => {
     try {
       const user = await signup({ name, email, password, photo });
-      navigation.navigate("Profile", { user });
+      setUser(user);
     } catch (e) {
       Alert.alert("Sign up Error", e.message);
     }
-    console.log("sign up!");
   };
 
   return (

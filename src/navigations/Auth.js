@@ -24,7 +24,7 @@ const Auth = () => {
         name="Signup"
         component={Signup}
         options={{
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           headerBackTitleVisible: false,
           headerTintColor: theme.text,
           headerLeft: ({ onPress, tintColor }) => (
@@ -37,7 +37,6 @@ const Auth = () => {
           ),
         }}
       />
-      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };

@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Auth from "./Auth";
+import { UserContext } from "../contexts";
+import Main from "./Main";
 
 const Navigation = () => {
-  return(
-  <NavigationContainer>
-    <Auth />
-  </NavigationContainer>
-  )
-}
+  const {user} = useContext(UserContext);
+  return (
+  <NavigationContainer>{user.uid ? <Main /> : <Auth />}</NavigationContainer>
+  );
+};
 
 export default Navigation;

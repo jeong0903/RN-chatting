@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useContext} from "react";
+import { UserContext } from "../contexts";
 import styled from "styled-components/native";
 import { Button } from "../components";
 
@@ -7,11 +8,12 @@ const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
 `;
 
-const Profile = ({navigation}) => {
-  
+const Profile = () => {
+  const{setUser} = useContext(UserContext);
+
   return (
     <Container>
-      <Button title="Sing Out" onPress={() => navigation.navigate('Signin')} />
+      <Button title="Sing Out" onPress={() => setUser({})} />
     </Container>
   );
 };
