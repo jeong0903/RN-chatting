@@ -7,7 +7,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Alert } from "react-native";
 import { signin } from "../firebase";
 import { validateEmail, removeWhitespace } from "../utils";
-import { UserContext } from "../contexts";
+import { UserContext, ProgressContext } from "../contexts";
 
 const Container = styled.View`
   flex: 1;
@@ -26,6 +26,7 @@ const Signin = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const theme = useContext(ThemeContext);
   const {setUser} = useContext(UserContext);
+  const {spinner} = useContext(ProgressContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,9 +42,7 @@ const Signin = ({ navigation }) => {
     const changedEmail = removeWhitespace(email);
     setEmail(changedEmail);
     setErrorMessage(
-      validateEmail(changedEmail)
-        ? ""
-        : "Email 주소를 확인하세요(ex.id@email.com)"
+      validateEmail(changedEmail) ? "" : "Email 주소를 확인하세요(ex.id@email.com)"
     );
   };
   const _handlePasswordChange = (password) => {
@@ -52,10 +51,13 @@ const Signin = ({ navigation }) => {
 
   const _handleSigninBtnPress = async () => {
     try {
+      spinner.start();
       const user = await signin({ email, password });
       setUser(user);
     } catch (e) {
       Alert.alert("Sign in Error", e.message);
+    } finally{
+      spinner.stop();
     }
   };
 

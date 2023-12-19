@@ -1,17 +1,22 @@
-import React from 'react';
-import {StatusBar} from 'react-native';
-import {ThemeProvider} from 'styled-components/native';
-import {theme} from './theme';
-import Navigation from './navigations';
-import { UserProvider } from './contexts';
+import React from "react";
+import { StatusBar } from "react-native";
+import { ThemeProvider } from "styled-components/native";
+import { theme } from "./theme";
+import Navigation from "./navigations";
+import { UserProvider, ProgressProvider } from "./contexts";
 
 const App = () => {
-  return(
+  return (
     <ThemeProvider theme={theme}>
-      <UserProvider>
-      <StatusBar backgroundColor={theme.background} barStyle="dark-content" />
-      <Navigation />
-      </UserProvider>
+      <ProgressProvider>
+        <UserProvider>
+          <StatusBar
+            backgroundColor={theme.background}
+            barStyle="dark-content"
+          />
+          <Navigation />
+        </UserProvider>
+      </ProgressProvider>
     </ThemeProvider>
   );
 };
