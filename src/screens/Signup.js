@@ -19,7 +19,7 @@ const DEFAULT_PHOTO =
   "https://firebasestorage.googleapis.com/v0/b/react-native-chat-1463b.appspot.com/o/user.png?alt=media";
 
 const Signup = ({ navigation }) => {
-  const {setUser} = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +34,9 @@ const Signup = ({ navigation }) => {
   const refDidMount = useRef(null);
 
   useEffect(() => {
-    setDisabled(!(name && email && password && passwordCk && !errorMessage));
+    setDisabled(
+      !(name && email && password && passwordCk && !errorMessage)
+      );
   }, [email, name, password, passwordCk, errorMessage]);
 
   useEffect(() => {

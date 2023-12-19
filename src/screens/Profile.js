@@ -13,7 +13,7 @@ const Profile = () => {
 
   return (
     <Container>
-      <Button title="Sing Out" onPress={() => setUser({})} />
+      <Button title="Sign Out" onPress={() => setUser({})} />
     </Container>
   );
 };

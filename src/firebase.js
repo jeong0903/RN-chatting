@@ -1,9 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,updateProfile, } from 'firebase/auth';
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  updateProfile, 
+} from 'firebase/auth';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import config from '../firebase.json';
 
-const app = initializeApp(config);
+export const app = initializeApp(config);
 
 const auth = getAuth(app);
 
@@ -36,3 +41,4 @@ export const signup = async ({ name, email, password, photo }) => {
   await updateProfile(auth.currentUser, { displayName: name, photoURL });
   return user;
 };
+

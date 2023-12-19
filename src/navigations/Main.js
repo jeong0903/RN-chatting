@@ -16,7 +16,7 @@ const Main = () => {
       cardStyle: {backgroundColor: theme. background}
     }}
     >
-    <Stack.Screen name="Profile" conponent={Profile} />
+    <Stack.Screen name="Profile" component={Profile} />
   </Stack.Navigator>
 }
 
