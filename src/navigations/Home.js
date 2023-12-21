@@ -26,7 +26,7 @@ const Home = ({navigation, route}) => {
     });
   })
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="List"
         component={ChannelList}
