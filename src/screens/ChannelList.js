@@ -14,7 +14,6 @@ const ChannelList = ({navigation}) => {
   return (
     <Container>
       <StyledText>Channel List</StyledText>
-      <Button title="Create" onPress={() => navigation.navigate('ChannelCreation')} />
       <Button title="Chennel" onPress={() => navigation.navigate('Chennel')} />
     </Container>
   )

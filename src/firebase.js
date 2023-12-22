@@ -1,11 +1,17 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,updateProfile, } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword,signOut, updateProfile, } from 'firebase/auth';
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import config from '../firebase.json';
 
 const app = initializeApp(config);
 
-const auth = getAuth(app);
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
 
 export const signin = async ({ email, password}) => {
   const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -52,3 +58,19 @@ export const signout = async () => {
   await signOut(auth);
   return {};
 };
+
+const DB = getFirestore(app);
+
+export const createChannel = async ( {title, desc}) => {
+  const channelCollection = collection(DB, 'channels');
+  const newChannelRef = doc(channelCollection);
+  const id = newChannelRef.id;
+  const newChannel = {
+    id,
+    title,
+    description: desc,
+    createdAt: Date.now(),
+  };
+  await setDoc(newChannelRef, newChannel);
+  return id;
+}

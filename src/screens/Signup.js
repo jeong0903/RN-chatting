@@ -71,7 +71,7 @@ const Signup = ({ navigation }) => {
     } catch (e) {
       Alert.alert("Sign up Error", e.message);
     } finally{
-      spinner.stio();
+      spinner.stop();
     }
   };
 

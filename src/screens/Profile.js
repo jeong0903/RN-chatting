@@ -15,7 +15,7 @@ const Container = styled.View`
   padding: 0 20px;
 `;
 
-const Profile = ({ navigaton, route }) => {
+const Profile = () => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
   const theme = useContext(ThemeContext);
@@ -23,7 +23,7 @@ const Profile = ({ navigaton, route }) => {
 
   const [photo, setPhoto] = useState(user.photo);
 
-  const _handlePhotoChange = async (url) => {
+  const _handlePhotoChange = async url => {
     try {
       spinner.start();
       const photoURL = await updateUserInfo(url);
