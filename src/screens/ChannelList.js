@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
-import { Button } from "../components";
 import { Ionicons } from "@expo/vector-icons";
+import { app } from "../firebase";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import moment from "moment";
 
-const channels = [];
-for (let i = 0; i < 1000; i++) {
-  channels.push({
-    id: i,
-    thtle: `title: ${i}`,
-    description: `desc: ${i}`,
-    createdAt: i,
-  });
-}
+const getDateOrTime = (ts) => {
+  const now = moment().startOf("day");
+  const target = moment(ts).startOf("day");
+  return moment(ts).format(now.diff(target, "day") > 0 ? "MM/DD" : "HH:mm");
+};
 
 const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
@@ -51,34 +55,55 @@ const ItemIcon = styled(Ionicons).attrs(({ theme }) => {
 })``;
 const Item = React.memo(
   ({ item: { id, title, description, createdAt }, onPress }) => {
-  console.log(id);
+    console.log(id);
 
-  return (
-    <ItemContainer>
-      <ItemTextContainer>
-        <ItemTitle>{title}</ItemTitle>
-        <ItemDesc>{description}</ItemDesc>
-      </ItemTextContainer>
-      <ItemTime>{createdAt}</ItemTime>
-      <ItemIcon />
-    </ItemContainer>
-  );
-});
+    return (
+      <ItemContainer onPress={() => onPress({ id, title })}>
+        <ItemTextContainer>
+          <ItemTitle>{title}</ItemTitle>
+          <ItemDesc>{description}</ItemDesc>
+        </ItemTextContainer>
+        <ItemTime>{getDateOrTime(createdAt)}</ItemTime>
+        <ItemIcon />
+      </ItemContainer>
+    );
+  }
+);
 
 const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
-const StyledText = styled.Text`
-  font-size: 30px;
-`;
 
 const ChannelList = ({ navigation }) => {
+  const [channels, setChannels] = useState([]);
+  const DB = getFirestore(app);
+
+  useEffect(() => {
+    const collectionQuery = query(
+      collection(DB, "channels"),
+      orderBy("createdAt", "desc")
+    );
+    const unsubscribe = onSnapshot(collectionQuery, (snapshot) => {
+      const list = [];
+      snapshot.forEach((doc) => {
+        list.push(doc.data());
+      });
+      setChannels(list);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Container>
       <FlatList
         data={channels}
-        renderItem={({ item }) => <Item item={item} />}
+        renderItem={({ item }) => (
+          <Item
+            item={item}
+            onPress={(params) => navigation.navigate("Channels", params)}
+          />
+        )}
         keyExtractor={(item) => item["id"].toString()}
         windowSize={10}
       />
