@@ -17,8 +17,8 @@ const Label = styled.Text`
 const StyledInput = styled.TextInput.attrs(({ theme }) => ({
   placeholderTextColor: theme.inputPlaceholder,
 }))`
-  background-color: ${({ theme, editable }) => 
-  editable? theme.inputBackground : theme.inputDisabled };
+  background-color: ${({ theme, editable }) =>
+    editable ? theme.inputBackground : theme.inputDisabled};
   color: ${({ theme }) => theme.text};
   padding: 20px 10px;
   font-size: 16px;

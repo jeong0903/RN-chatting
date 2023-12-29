@@ -1,22 +1,22 @@
-import React, {useState, createContext} from "react";
+import React, { useState, createContext } from 'react';
 
 const ProgressContext = createContext({
   inProgress: false,
-  spinner: {start: () => {}, stop: () => {}}
+  spinner: { start: () => {}, stop: () => {} },
 });
 
-const ProgressProvider = ({children}) => {
+const ProgressProvider = ({ children }) => {
   const [inProgress, setInProgress] = useState(false);
   const spinner = {
     start: () => setInProgress(true),
     stop: () => setInProgress(false),
-  }
-  const value = {inProgress, spinner};
+  };
+  const value = { inProgress, spinner };
   return (
-  <ProgressContext.Provider value={value}>
-    {children}
-  </ProgressContext.Provider>
+    <ProgressContext.Provider value={value}>
+      {children}
+    </ProgressContext.Provider>
   );
 };
 
-export {ProgressContext, ProgressProvider}
+export { ProgressContext, ProgressProvider };

@@ -1,5 +1,4 @@
 import React from "react";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import styled from "styled-components/native";
 
 const Container = styled.View`
@@ -14,7 +13,7 @@ const Container = styled.View`
 
 const Indicator = styled.ActivityIndicator.attrs(({theme}) => ({
   size: 'large',
-  Colors: theme.spinnerIndicator,
+  colors: theme.spinnerIndicator,
 }))``;
 
 const Spinner = () => {

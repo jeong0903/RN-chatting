@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components/native";
+import React from 'react';
+import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 
 const StyledText = styled.Text`
@@ -8,15 +8,15 @@ const StyledText = styled.Text`
   height: 20px;
   margin-bottom: 10px;
   line-height: 20px;
-  color: ${({theme}) => theme.errorText};
+  color: ${({ theme }) => theme.errorText};
 `;
 
-const ErrorMessage = ({message}) => {
-  return <StyledText>{message}</StyledText>
-}
+const ErrorMessage = ({ message }) => {
+  return <StyledText>{message}</StyledText>;
+};
 
-ErrorMessage.prototype = {
+ErrorMessage.propTypes = {
   message: PropTypes.string.isRequired,
-}
+};
 
 export default ErrorMessage;

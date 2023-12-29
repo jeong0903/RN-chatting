@@ -66,7 +66,7 @@ const Image = ({url, showButton, onChangePhoto }) => {
     });
 
     if (!result.canceled) {
-      onChangePhoto(result.assets[0].uri);
+      onChangePhoto(result.uri);
     }
   };
 
