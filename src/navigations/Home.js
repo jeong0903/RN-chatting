@@ -20,18 +20,16 @@ const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation, route }) => {
   useEffect(() => {
-    const screenName = getFocusedRouteNameFromRoute(route) || "List";
+    const screenName = getFocusedRouteNameFromRoute(route) || 'List';
     navigation.setOptions({
       headerTitle: screenName,
       headerRight: () =>
-        screenName === "List" && (
+        screenName === 'List' && (
           <Ionicons
             name="add-circle-outline"
             size={26}
             style={{ margin: 10 }}
-            onPress={() => {
-              navigation.navigate("ChannelCreation");
-            }}
+            onPress={() => navigation.navigate('ChannelCreation')}
           />
         ),
     });

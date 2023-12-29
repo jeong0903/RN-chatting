@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { ThemeContext } from "styled-components/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { ChannelCreation, Channel } from "../screens";
-import Home from "./Home";
+import React, { useContext } from 'react';
+import { ThemeContext } from 'styled-components/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { ChannelCreation, Channel } from '../screens';
+import Home from './Home';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +12,7 @@ const Main = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerTintColor: theme.text,
         headerBackTitleVisible: false,
         cardStyle: { backgroundColor: theme.background },
