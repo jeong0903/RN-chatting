@@ -2,16 +2,17 @@ const Colors={
   white: '#ffffff',
   black: '#000000',
   main: '#4C4637',
-  grey_0: '#d5d5d5',
+  grey_0: '#FFF9EA',
   grey_1: '#a6a6a6',
-  red: '#F99053',
-  bgColor: '#FFF8E7',
+  txt: '#191300',
+  blue: '#00f',
+  bgColor: '#7D7666',
   transparent: 'transparent',
 };
 
 export const theme={
   background: Colors.bgColor,
-  text: Colors.black,
+  text: Colors.txt,
   errorText: Colors.red,
 
   // Button
@@ -27,10 +28,10 @@ export const theme={
 
   // Input
   inputBackground: Colors.transparent,
-  inputLabel: Colors.grey_1,
-  inputPlaceholder: Colors.grey_1,
-  inputBorder:Colors.grey_1,
-  inputDisabled:Colors.grey_0,
+  inputLabel: Colors.white,
+  inputPlaceholder: Colors.grey_0,
+  inputBorder:Colors.white,
+  inputDisabled:Colors.bgColor,
 
   //Spinner
   spinnerBackground: Colors.black,
@@ -44,5 +45,9 @@ export const theme={
   itemBorder: Colors.grey_0,
   itemTime:Colors.grey_1,
   itemDesc:Colors.grey_1,
-  itemIcon:Colors.grey_1
+  itemIcon:Colors.grey_1, 
+
+   // Chat
+   sendBtnActive: Colors.main,
+   sendBtnInactive: Colors.grey_1,
 };
